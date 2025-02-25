@@ -1,0 +1,32 @@
+local lspconfig = require "lspconfig"
+
+lspconfig.clangd.setup{
+    on_attach =function(client,bufner)
+      client.server_capabilities.signatureHelpProvider = false
+      on_attach(client,bufner)
+    cmd = { "clangd", "--background-index", "--suggest-missing-includes" },
+    filetypes = { "c", "cpp", "objc", "objcpp" },
+    root_dir = lspconfig.util.root_pattern(".git", "."),
+    settings = {
+        clangd = {
+            completion = {
+                completeNumbers = true,
+                completeSymbols = true,
+            },
+            index = {
+                threads = 4, -- Adjust based on your CPU cores
+            },
+            hover_with_actions = true,
+            suggest = {
+                enable = true,
+                multiselection = true,
+            },
+            semantic = {
+                diagnostics = {
+                    enable = true,
+                },
+            },
+        },
+    },
+}
+

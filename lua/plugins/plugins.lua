@@ -1,4 +1,4 @@
--- since this is just an example spec, don't actually load anything here and return an empty spec
+    -- since this is just an example spec, don't actually load anything here and return an empty spec
 -- stylua: ignore
 if true then return {} end
 
@@ -9,17 +9,22 @@ if true then return {} end
 -- * disable/enabled LazyVim plugins
 -- * override the configuration of LazyVim plugins
 return {
-  -- add gruvbox
-  { "ellisonleao/gruvbox.nvim" },
+  { "mfussenegger/nvim-dap" },
 
-  -- Configure LazyVim to load gruvbox
+  {
+    "julianolf/nvim-dap-lldb",
+    dependencies = { "mfussenegger/nvim-dap" },
+    opts = { codelldb_path = "/home/ccelarator01/.vscode/extensions/llvm-vs-code-extensions.lldb-dap-0.2.10" },
+  },
+  { { "akinsho/toggleterm.nvim", version = "*", config = true } },
+
   {
     "LazyVim/LazyVim",
     opts = {
-      colorscheme = "gruvbox",
+      colorscheme = "elflord",
     },
   },
-
+  { "stevearc/vim-arduino" },
   -- change trouble config
   {
     "folke/trouble.nvim",
@@ -66,14 +71,9 @@ return {
   -- add pyright to lspconfig
   {
     "neovim/nvim-lspconfig",
-    ---@class PluginLspOpts
-    opts = {
-      ---@type lspconfig.options
-      servers = {
-        -- pyright will be automatically installed with mason and loaded with lspconfig
-        pyright = {},
-      },
-    },
+    config = function()
+      require("config.lspconfig")
+    end,
   },
 
   -- add tsserver and setup with typescript.nvim instead of lspconfig
@@ -134,11 +134,10 @@ return {
         "typescript",
         "vim",
         "yaml",
+        "cpp",
       },
     },
-  },
-
-  -- since `vim.tbl_deep_extend`, can only merge tables and not lists, the code above
+  }, -- since `vim.tbl_deep_extend`, can only merge tables and not lists, the code above
   -- would overwrite `ensure_installed` with the new value.
   -- If you'd rather extend the default config, use the code below instead:
   {
