@@ -9,8 +9,21 @@ if true then return {} end
 -- * disable/enabled LazyVim plugins
 -- * override the configuration of LazyVim plugins
 return {
-  { "mfussenegger/nvim-dap" },
 
+  {
+    "glebzlat/arduino-nvim",
+    config = {
+      function()
+        require("arduino-nvim").setup()
+      end,
+      filetype = "arduino",
+    },
+  },
+  {
+
+    "antoinemadec/window-movement.nvim",
+    lazy = true,
+  },
   {
     "julianolf/nvim-dap-lldb",
     dependencies = { "mfussenegger/nvim-dap" },
@@ -60,7 +73,7 @@ return {
     -- change some options
     opts = {
       defaults = {
-        layout_strategy = "horizontal",
+        layout_strategy = "vertical",
         layout_config = { prompt_position = "top" },
         sorting_strategy = "ascending",
         winblend = 0,
